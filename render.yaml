@@ -1,0 +1,21 @@
+# Optional blueprint. Applying it may incur hosting/disk charges; review before authorizing.
+services:
+  - type: web
+    name: apex-roofing
+    runtime: node
+    plan: starter
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATA_DIR
+        value: /var/data/apex/appointments
+    disk:
+      name: apex-private-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -1,0 +1,58 @@
+{
+  "viewports": [
+    {
+      "width": 375,
+      "viewport": 375,
+      "document": 375,
+      "brokenImages": 0
+    },
+    {
+      "width": 390,
+      "viewport": 390,
+      "document": 390,
+      "brokenImages": 0
+    },
+    {
+      "width": 430,
+      "viewport": 430,
+      "document": 430,
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "viewport": 768,
+      "document": 768,
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "viewport": 1024,
+      "document": 1024,
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "viewport": 1440,
+      "document": 1440,
+      "brokenImages": 0
+    },
+    {
+      "width": 1920,
+      "viewport": 1920,
+      "document": 1920,
+      "brokenImages": 0
+    }
+  ],
+  "tests": [
+    "All seven viewport widths: no horizontal overflow or broken images",
+    "Mobile navigation and mouse/keyboard roof hotspots",
+    "Honest ZIP availability and FAQ accordion",
+    "Unconfigured phone dialog and Escape dismissal",
+    "Inline validation, conditional email validation, image selection, recoverable server failure",
+    "Real local backend persistence, validated image upload, truthful local success state",
+    "Server rejects invalid fields, spoofed image bytes, past date, and cross-origin submission"
+  ],
+  "accessibility": [],
+  "consoleErrors": [],
+  "mobileAccessibility": []
+}

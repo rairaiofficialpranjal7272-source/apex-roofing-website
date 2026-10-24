@@ -1,0 +1,46 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+.cache/
+.npm/
+
+# Environment and credentials (only a placeholder example is versioned)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+credentials.json
+service-account*.json
+.npmrc
+.netrc
+
+# Private submissions, uploads, database copies, logs and test artifacts
+/data/
+/uploads/
+/backups/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+test-results/
+playwright-report/
+blob-report/
+
+# Original artwork is not required to build or run the site
+artwork-source/
+
+# Machine/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tsbuildinfo
