@@ -7,11 +7,7 @@ import { mkdir, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const root = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = process.env.DATA_DIR
-  ? path.resolve(process.env.DATA_DIR)
-  : path.join(root, "data", "appointments");
 const app = express();
-app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
 app.disable("x-powered-by");
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
@@ -146,6 +142,7 @@ app.post(
       status: "local-only",
     };
     delete record.website;
+    const dataDir = path.join(root, "data", "appointments");
     try {
       await mkdir(dataDir, { recursive: true, mode: 0o700 });
       if (extension)

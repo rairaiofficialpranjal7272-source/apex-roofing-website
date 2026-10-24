@@ -1,19 +1,17 @@
 {
   "name": "apex-roofing",
   "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
     "dev": "node server.mjs",
     "build": "tsc --noEmit && vite build",
     "start": "NODE_ENV=production node server.mjs",
-    "test": "node tests/e2e.mjs",
-    "typecheck": "tsc --noEmit",
-    "test:production": "node scripts/test-production.mjs",
-    "security:repository": "node scripts/check-repository.mjs"
+    "test": "node tests/e2e.mjs"
   },
   "keywords": [],
   "author": "",
-  "license": "UNLICENSED",
-  "description": "Premium responsive residential roofing website with a validated Express appointment API.",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
@@ -35,8 +33,5 @@
     "vite": "^6.4.5"
   },
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=22.0.0 <23"
-  }
+  "type": "module"
 }

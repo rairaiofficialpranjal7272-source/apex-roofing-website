@@ -4,7 +4,7 @@ A complete responsive roofing website built with React, TypeScript, Vite, and an
 
 ## Run
 
-Requires **Node.js 22 LTS** and npm. Use `nvm use` to select the version in `.nvmrc`.
+Requires Node.js 20.19+ (Node 22 LTS recommended).
 
 ```bash
 npm ci
@@ -61,7 +61,7 @@ Without integration credentials, the site operates in **clearly labeled local-pr
 
 There is deliberately no public inbox endpoint. A site administrator with server access can review records directly. Preview test submissions are removed by the test suite. The `data` directory is excluded from source archives and version control.
 
-Set server-only `DATA_DIR` to the absolute path of your private persistent submissions directory (default: `data/appointments`). This local filesystem is suitable for the preview, **not a scalable production booking database**. Workspace snapshot retention is not a booking-data durability guarantee. Before public launch, use persistent protected hosting/storage or a verified delivery integration, restrict administrator access, define retention/deletion policies, and protect backups. Never commit real customer data.
+This local filesystem is suitable for the preview, **not a scalable production booking database**. Workspace snapshot retention is not a booking-data durability guarantee. Before public launch, use persistent protected hosting/storage or a verified delivery integration, restrict administrator access, define retention/deletion policies, and protect backups. Never commit real customer data.
 
 ## Connect live request delivery
 
@@ -95,15 +95,12 @@ The receiver must return a **2xx** response only after it has accepted the reque
 
 ## Testing
 
-The self-contained production test command starts an isolated server on port 4173, forces local-only booking mode, runs the browser/API suite, and stops the server:
+With the website running:
 
 ```bash
 npx playwright install --with-deps chromium
-npm run build
-npm run test:production
+npm test
 ```
-
-For an already-running local preview, `npm test` remains available. Do not point these synthetic submission tests at a live customer system. Generated reports and submissions are excluded from Git.
 
 The test suite checks:
 
@@ -133,53 +130,3 @@ tests/                     Browser interaction, API, and accessibility checks
 ```
 
 All architectural photographs are AI-generated illustrative assets, not actual completed Apex projects. Google Fonts Space Grotesk and Inter are supplied under their included SIL Open Font Licenses.
-
-## GitHub publication and review
-
-The project contains a GitHub Actions workflow at `.github/workflows/ci.yml`. It installs locked dependencies, checks repository hygiene, typechecks/builds, installs Chromium, and tests an isolated production server on Node 22. It needs no deployment credentials. **A locally passing build is not a GitHub Actions result until the workflow has actually run on GitHub.**
-
-Recommended branch: `feat/apex-roofing-launch`.
-
-1. Select the destination repository and verify write access. Prefer a private repository until business information and legal content are approved.
-2. If it already contains files, clone it, inspect its default branch and contribution rules, then create the working branch from that default branch. Integrate only the website files, resolving conflicting files explicitly; do not replace unrelated files or force-push.
-3. Review `git diff --cached --stat` and `git diff --cached`. Run `npm run security:repository` after staging the intended files.
-4. Commit and push the working branch using your authenticated Git client. Do not place access tokens in remote URLs or source files.
-5. Open a pull request into the repository's default branch. Describe the local-preview booking limitation, deployment requirements, and test results.
-6. In the PR's **Checks** tab, verify the **Website checks / build-and-test** job is green. Review the **Files changed** tab, then use **Squash and merge** (or the repository's approved merge method). Do not merge while checks or review are outstanding.
-7. Deploy the merged commit separately. A pushed branch or merged PR alone does not publish the website.
-
-If creating a new repository through GitHub's UI, select the owner/name and visibility intentionally. Do not add a license unless you have decided to license the project; this application is currently marked `UNLICENSED`. The bundled fonts retain their separate open-font licenses.
-
-## Recommended full-stack deployment: Render
-
-This project is **not a static-only website**. Express handles multipart submissions, server-side validation, private file storage, local inbox records, and optional authenticated webhook delivery. GitHub Pages cannot execute Node/Express or store private submission data.
-
-A reviewed optional `render.yaml` blueprint is included. It describes a Node web service with a private persistent disk; applying it may incur charges. No hosting resource has been created by this preparation.
-
-After merging the PR:
-
-1. In Render, choose **New → Web Service** and connect the selected GitHub repository, or review/import the blueprint. Choose the merged default branch and the project directory as the root (repository root if these files are at the top level).
-2. Use Node **22**, build command **`npm ci --include=dev && npm run build`**, and start command **`npm start`**.
-3. Add a persistent disk mounted at **`/var/data`** and set **`DATA_DIR=/var/data/apex/appointments`**. Without a persistent disk or replacement database/object storage, filesystem submissions can be lost on redeploy. A live webhook does not remove this requirement: this implementation also writes local records and optional image files.
-4. Keep `NODE_ENV=production`. Let the host provide `PORT`; the app listens on `0.0.0.0`. Set the health check to **`/api/health`**.
-5. Add any real `APPOINTMENT_WEBHOOK_URL` and `WEBHOOK_TOKEN` only through the hosting dashboard's secret settings. Do not put them in `render.yaml`, GitHub source, or frontend `VITE_` variables.
-6. Configure real business details in `src/config.ts`, update domain-specific metadata, and review privacy/terms before serving real visitors.
-7. Deploy and open the generated HTTPS URL. Check the homepage, `/api/health`, `/api/booking-status`, image/font assets, mobile menu, and form error handling. With your authorization, submit a marked test request and verify receipt/storage/delivery. Remove that test record afterward.
-8. Add the custom domain and the DNS records Render supplies. Wait for DNS and HTTPS verification, then repeat the checks on the final public domain.
-
-Railway or Fly.io with a persistent volume are alternatives. Vercel/Netlify would require adapting the Express API and moving uploads/data to protected persistent services; simply uploading `dist/` there does not provide the current backend.
-
-## GitHub Pages (static frontend only — not configured)
-
-**Do not enable Pages expecting the booking backend to work.** Uploading this project's `dist/` alone leaves `/api/booking-status` and `/api/appointments` unavailable. GitHub repository publication is independent of Pages hosting.
-
-If you intentionally split the frontend and backend later:
-
-1. Deploy the backend to a Node-capable host first, with protected persistent storage.
-2. Add a public API-base configuration to the frontend and update all `/api/` requests. Configure restrictive CORS and update the backend origin/CSRF checks to explicitly allow the chosen Pages origin. Never expose the webhook token in browser code.
-3. Make Vite's base URL and **all image/font paths** work at the repository subpath (`/repository-name/`), or use an approved custom domain. Current root-relative paths assume a root-domain deployment and are not project-Pages-ready.
-4. Add a Pages workflow that builds and uploads only `dist/` with `actions/upload-pages-artifact` and deploys it with `actions/deploy-pages`; do not deploy the entire source tree or private data. Grant only `contents: read`, `pages: write`, and `id-token: write`, and use the `github-pages` environment.
-5. In **Repository Settings → Pages → Build and deployment**, select **GitHub Actions**. Merge the reviewed Pages workflow, wait for it to pass, and open the URL shown in the deployment.
-6. Verify images, fonts, all navigation, and real backend submissions on that public URL before declaring launch complete.
-
-No Pages deployment workflow is included because the current full-stack app should be deployed as one same-origin Node service.

@@ -1,8 +1,6 @@
 # Verification summary
 
-Reverified on **Node 22.23.4** against an isolated production server with `npm run build` and `npm run test:production` during repository preparation.
-
-GitHub publication status: **not pushed**. The GitHub connector is unavailable in this session and no authenticated Git credentials or destination repository have been supplied. GitHub Actions and public hosting have not been verified.
+Verified against the running **production build** (`npm run build` / `npm start`).
 
 ## Passed
 
